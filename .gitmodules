@@ -1,0 +1,6 @@
+[submodule "youtube-frontend"]
+	path = frontend
+	url = https://github.com/ravirajbhardwaj/instagram-clone-frontend
+[submodule "youtube-backend"]
+	path = backend
+	url = https://github.com/ravirajbhardwaj/backend

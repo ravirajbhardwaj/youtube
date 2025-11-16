@@ -11,6 +11,7 @@ dist/
 prisma/dev.db
 prisma/*.sqlite
 prisma/migrations/
+generated/
 *.db-journal
 
 # Logs

@@ -39,6 +39,7 @@ import commentRouter from "./api/user/user.route"
 import likeRouter from "./api/user/user.route"
 import playlistRouter from "./api/user/user.route"
 import dashboardRouter from "./api/user/user.route"
+import { errorHandler } from "./middlewares/error.middleware"
 
 //routes declaration
 app.use("/api/v1/healthcheck", healthcheckRouter)
@@ -50,5 +51,7 @@ app.use("/api/v1/comments", commentRouter)
 app.use("/api/v1/likes", likeRouter)
 app.use("/api/v1/playlist", playlistRouter)
 app.use("/api/v1/dashboard", dashboardRouter)
+
+app.use(errorHandler)
 
 export { app }

@@ -1,7 +1,8 @@
 // DataBase Schema
 generator client {
   provider            = "prisma-client"
-  output              = "../generated/prisma"
+  output              = "../src/generated/prisma"
+  engineType          = "client"
   importFileExtension = ""
   moduleFormat        = "esm"
   runtime             = "nodejs"

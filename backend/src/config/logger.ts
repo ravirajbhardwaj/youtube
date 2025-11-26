@@ -3,9 +3,6 @@ import { env } from './env';
 import type { Request, Response } from 'express';
 import { ApiError } from '../utils/ApiError';
 
-const IS_DEV = env.NODE_ENV === 'development';
-const LOG_LEVEL = IS_DEV ? 'debug' : 'info';
-
 const redact = {
   paths: [
     'password', 'token', 'apiKey', 'authorization',
@@ -23,19 +20,19 @@ const serializers = {
 
 const base = {
   env: env.NODE_ENV,
-  version: process.env.APP_VERSION || undefined
+  version: env.APP_VERSION
 };
 
 function createLogger(): Logger {
   const commonOptions = {
-    level: LOG_LEVEL,
+    level: env.LOG_LEVEL,
     serializers,
     redact,
     base,
     timestamp: stdTimeFunctions.isoTime as any
   };
 
-  if (IS_DEV) {
+  if (env.NODE_ENV !== 'production') {
     return pino(
       commonOptions,
       pino.transport({

@@ -39,7 +39,9 @@ const envSchema = z.object({
   SERVER_URL: validURL("SERVER_URL"),
   CLIENT_URL: validURL("CLIENT_URL"),
 
-  NODE_ENV: nonEmptyString("NODE_ENV"),
+  NODE_ENV: z.enum(['development', 'production']).default('production'),
+  LOG_LEVEL: nonEmptyString("LOG_LEVEL"),
+  APP_VERSION: nonEmptyString("APP_VERSION")
 });
 
 const createEnv = (env: NodeJS.ProcessEnv) => {

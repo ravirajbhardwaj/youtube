@@ -1,20 +1,34 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "module": "CommonJS",
-    "strict": true,
-    "moduleResolution": "node",
-    "noImplicitAny": true,
+    "moduleResolution": "Node",
     "esModuleInterop": true,
+    "skipLibCheck": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "rootDir": "src",
-    "outDir": "dist",
-    "removeComments": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
     "forceConsistentCasingInFileNames": true,
     "noEmitOnError": true,
-    "skipLibCheck": true
+
+    "removeComments": true,
+    "isolatedModules": true,
+
+    "rootDir": "src",
+    "outDir": "dist",
+
+    "lib": ["es2022", "DOM"],
+    "types": ["node"],
+
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
-  "include": ["src/**/*", "types", "src/types.d.ts"],
+
+  "include": ["src", "types"],
   "exclude": ["node_modules", "dist"]
 }

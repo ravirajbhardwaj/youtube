@@ -1,9 +1,9 @@
-import { env } from "./config/env"
+import { env } from "@/config/env"
 import express from "express"
 import cors, { CorsOptions } from "cors"
 import helmet from "helmet"
 import cookieParser from "cookie-parser"
-import { ApiError } from "./utils/ApiError"
+import { ApiError } from "@/utils/ApiError"
 
 const app = express()
 
@@ -30,16 +30,16 @@ app.use(express.urlencoded({ extended: true, limit: "12kb" }));
 app.use(cookieParser());
 
 // import routes
-import healthcheckRouter from "./api/healthcheck"
-import authRoute from "./api/user/user.route"
-import tweetRouter from "./api/user/user.route"
-import subscriptionRouter from "./api/user/user.route"
-import videoRouter from "./api/user/user.route"
-import commentRouter from "./api/user/user.route"
-import likeRouter from "./api/user/user.route"
-import playlistRouter from "./api/user/user.route"
-import dashboardRouter from "./api/user/user.route"
-import { errorHandler } from "./middlewares/error.middleware"
+import healthcheckRouter from "@/api/healthcheck"
+import authRoute from "@/api/user/user.route"
+import tweetRouter from "@/api/user/user.route"
+import subscriptionRouter from "@/api/user/user.route"
+import videoRouter from "@/api/user/user.route"
+import commentRouter from "@/api/user/user.route"
+import likeRouter from "@/api/user/user.route"
+import playlistRouter from "@/api/user/user.route"
+import dashboardRouter from "@/api/user/user.route"
+import { errorHandler } from "@/middlewares/error.middleware"
 
 //routes declaration
 app.use("/api/v1/healthcheck", healthcheckRouter)

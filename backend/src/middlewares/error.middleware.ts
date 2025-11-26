@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { logger } from "../config/logger";
-import { ApiError } from "../utils/ApiError";
-import { ERROR_CODE, ERROR_NAME } from "../utils/constant";
-import { Prisma } from "../generated/prisma/client";
+import { logger } from "@/config/logger";
+import { ApiError } from "@/utils/ApiError";
+import { ERROR_CODE, ERROR_NAME } from "@/utils/constant";
+import { Prisma } from "@/generated/prisma/client";
 
 export const errorHandler = (error: any, req: Request, res: Response, _: NextFunction): void => {
   let apiError: ApiError;

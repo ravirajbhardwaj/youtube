@@ -1,9 +1,9 @@
-import { env } from "./config/env"
-import { app } from "./app"
-import { logger } from "./config/logger"
+import { env } from "@/config/env"
+import { app } from "@/app"
+import { logger } from "@/config/logger"
 
-const PORT: number = env.PORT ?? 3000
+const PORT = env.PORT
 
 app.listen(PORT, () => {
-  logger.info(`SERVER IS RUNNING AT ${env.SERVER_URL}:${PORT}`)
+  logger.info(`SERVER IS RUNNING AT ${env.SERVER_URL}`)
 })

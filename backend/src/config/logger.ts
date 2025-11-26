@@ -1,7 +1,7 @@
 import pino, { Logger, stdTimeFunctions } from 'pino';
 import { env } from './env';
 import type { Request, Response } from 'express';
-import { ApiError } from '../utils/ApiError';
+import { ApiError } from '@/utils/ApiError';
 
 const redact = {
   paths: [

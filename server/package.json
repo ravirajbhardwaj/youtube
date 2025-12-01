@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot src/adoptors/bun.ts",
+    "fmt": "pnpm exec biome format --write ./src"
+  },
+  "author": "ravirajbhardwaj",
+  "license": "MIT",
+  "packageManager": "pnpm@10.20.0",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.0.1",
+    "@prisma/client": "^7.0.1",
+    "dotenv": "^17.2.3",
+    "hono": "^4.10.7",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.8",
+    "@types/bun": "latest",
+    "@types/pg": "^8.15.6",
+    "prisma": "^7.0.1"
+  }
+}

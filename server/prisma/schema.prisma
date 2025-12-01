@@ -1,0 +1,182 @@
+// DataBase Schema
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id String @id @default(uuid()) @db.Uuid
+
+  fullname                String    @db.VarChar(20)
+  username                String    @unique(sort: Asc) @db.VarChar(12)
+  email                   String    @unique(sort: Asc)
+  password                String    @db.Text
+  avatar                  String?
+  coverImage              String?
+  refreshToken            String?   @unique @db.Text
+  forgotPasswordToken     String?   @db.Text
+  forgotPasswordExpiry    DateTime?
+  isEmailVerified         Boolean   @default(false)
+  emailVerificationToken  String?   @db.Text
+  emailVerificationExpiry DateTime?
+
+  // 1:N relations
+  videos        Video[]
+  tweets        Tweet[]
+  comments      Comment[]
+  subscriptions Subscription[] // who the user subscribes to [outgoing, subscriber -> channel]
+  subscribers   Subscription[] @relation("subscribers") // who subscribes to the user [incoming, channel -> subscriber]
+  likedVideos   VideoLike[]
+  likedTweets   TweetLike[]
+
+  // M:N relations
+  playlists Playlist[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Video {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+
+  videoFile    String
+  thumbnail    String
+  title        String    @db.VarChar(60)
+  description  String?   @db.VarChar(160)
+  duration     Int
+  viewCount    Int       @default(0)
+  likeCount    Int       @default(0)
+  commentCount Int       @default(0)
+  isPublished  Boolean   @default(true)
+  publishedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 1:N relations
+  playlists Playlist[]
+  likes     VideoLike[]
+  comments  Comment[]
+
+  @@index([userId])
+  @@index([title])
+  @@index([isPublished, publishedAt(sort: Desc)])
+  @@map("videos")
+}
+
+model Tweet {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+
+  content   String   @db.VarChar(200)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 1:N relations
+  likes TweetLike[]
+
+  @@index([userId])
+  @@map("tweets")
+}
+
+model Subscription {
+  id           String @id @default(uuid()) @db.Uuid
+  subscriberId String @db.Uuid
+  channelId    String @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  subscriber User @relation(fields: [subscriberId], references: [id], onDelete: Cascade) // who subscribes
+  channel    User @relation("subscribers", fields: [channelId], references: [id], onDelete: Cascade) // who is subscribed to
+
+  @@unique([subscriberId, channelId])
+  @@index([channelId])
+  @@index([subscriberId])
+  @@map("subscriptions")
+}
+
+model Playlist {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+
+  name        String   @db.VarChar(30)
+  description String?  @db.VarChar(160)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // M:N relations
+  videos Video[]
+
+  @@index([userId])
+  @@index([userId, name], name: "UserPlaylist") // unique playlist names per user
+  @@map("playlists")
+}
+
+model VideoLike {
+  userId    String   @db.Uuid
+  videoId   String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  // relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@id([userId, videoId]) // composite primary key
+  @@index([videoId, createdAt(sort: Desc)])
+  @@map("video_likes")
+}
+
+model TweetLike {
+  userId    String   @db.Uuid
+  tweetId   String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  // relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tweet Tweet @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+
+  @@id([userId, tweetId]) // composite primary key
+  @@index([tweetId])
+  @@map("tweet_likes")
+}
+
+model Comment {
+  id              String  @id @default(uuid()) @db.Uuid
+  userId          String  @db.Uuid
+  videoId         String  @db.Uuid
+  parentCommentId String? @db.Uuid
+
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  video Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  // self-relation for nested comments
+  parentComment Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: SetNull)
+  replies       Comment[] @relation("CommentReplies")
+
+  @@index([userId])
+  @@index([videoId])
+  @@index([parentCommentId])
+  @@map("comments")
+}

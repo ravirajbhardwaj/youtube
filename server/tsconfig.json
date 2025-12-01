@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    // type-safety / strictness
+    "strict": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": true,
+    
+    // transpile/build
+    "removeComments": true,
+    "isolatedModules": true,
+    "rootDir": "src",
+    "outDir": "dist",
+
+    "jsxImportSource": "hono/jsx",
+    "jsx": "react-jsx",
+
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": ["src", "types"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -13,7 +13,7 @@
 <p align="center">
   <a href="README.md">
     <img
-      src="https://go-skill-icons.vercel.app/api/icons?i=typescript,pnpm,hono,postgresql,prisma,neon,jwt,cloudflare&perline=8" alt="tech stack"
+      src="https://go-skill-icons.vercel.app/api/icons?i=typescript,pnpm,hono,postgresql,prisma,neon,jwt,cloudflare,react,tailwind,reactrouter,zustand" alt="tech stack"
     />
   </a>
 </p>

@@ -1,5 +1,3 @@
-<h2 align="center">YOUTUBE <img src="https://go-skill-icons.vercel.app/api/icons?i=youtube" alt="youtube" height="24"/><h2/>
-
 <div align="center">
 
 [![X Badge](https://img.shields.io/badge/-@eravitw-1ca0f1?style=social&labelColor=red&logo=x&logoColor=black&link=https://x.com/eravitw)](https://x.com/eravitw) &nbsp;
@@ -13,7 +11,33 @@
 <p align="center">
   <a href="README.md">
     <img
-      src="https://go-skill-icons.vercel.app/api/icons?i=typescript,pnpm,hono,postgresql,prisma,neon,jwt,cloudflare,react,tailwind,reactrouter,zustand" alt="tech stack"
+      src="https://go-skill-icons.vercel.app/api/icons?i=typescript,pnpm,biome,hono,postgresql,prisma,neon,jwt,cloudflare,nextjs,tailwind,zustand" alt="tech stack"
     />
   </a>
 </p>
+
+### Installation
+
+
+```bash
+git clone git@github.com:ravirajbhardwaj/youtube.git
+cd youtube
+```
+
+### server
+
+```bash
+cd server
+pnpm install
+cp .env.example .env
+pnpm dev
+```
+
+### web
+
+```bash
+cd web
+pnpm install
+cp .env.example .env
+pnpm dev
+```

@@ -4,17 +4,11 @@ import { env } from './env'
 
 const adapter = new PrismaPg({ connectionString: env.DATABASE_URL })
 
-const prismaClientSingleton = () => {
-  return new PrismaClient({ adapter })
-}
-
-type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>
-
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClientSingleton | undefined
+  prisma: PrismaClient
 }
 
-export const prisma = globalForPrisma.prisma || prismaClientSingleton()
+export const prisma = globalForPrisma.prisma || new PrismaClient({ adapter })
 
 if (env.APP_ENV !== 'production') globalForPrisma.prisma = prisma
 

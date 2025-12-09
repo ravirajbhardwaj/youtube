@@ -19,3 +19,8 @@ export const HttpStatus = {
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504,
 } as const
+
+export const MAX_IMAGE_BYTES = 2 * 1024 * 1024 // 2MB
+export const ACCEPTED_MIMES = ['image/png', 'image/jpeg', 'image/webp']
+
+export const USER_TEMPORARY_TOKEN_EXPIRY = 10 * 60 * 1000

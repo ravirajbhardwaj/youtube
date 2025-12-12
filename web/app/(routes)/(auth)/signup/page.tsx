@@ -14,22 +14,42 @@ export default function SignUpPage() {
 
       <div className="grid w-full max-w-sm items-center gap-3 mt-3">
         <Label htmlFor="email">Email</Label>
-        <Input className="bg-input" type="email" id="email" placeholder="Email" />
+        <Input
+          className="bg-input"
+          type="email"
+          id="email"
+          placeholder="Email"
+        />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-3 mt-3">
         <Label htmlFor="username">UserName</Label>
-        <Input className="bg-input" type="text" id="username" placeholder="UserName" />
+        <Input
+          className="bg-input"
+          type="text"
+          id="username"
+          placeholder="UserName"
+        />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-3 mt-3">
         <Label htmlFor="fullname">FullName</Label>
-        <Input className="bg-input" type="text" id="fullname" placeholder="Fullname" />
+        <Input
+          className="bg-input"
+          type="text"
+          id="fullname"
+          placeholder="Fullname"
+        />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-3 mt-3">
         <Label htmlFor="password">Password</Label>
-        <Input className="bg-input" type="password" id="password" placeholder="Password" />
+        <Input
+          className="bg-input"
+          type="password"
+          id="password"
+          placeholder="Password"
+        />
       </div>
 
       <Button className="mt-5">Sign Up</Button>

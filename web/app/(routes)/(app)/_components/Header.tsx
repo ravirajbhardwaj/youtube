@@ -70,12 +70,7 @@ export default function Header() {
     <header className="sticky inset-x-0 top-0 z-50 w-full border-b px-4 bg-background text-foreground">
       <nav className="mx-auto flex max-w-7xl items-center py-2">
         <div className="mr-4 w-12 shrink-0 sm:w-16">
-          <Image
-            src="/youtube.png"
-            width={40}
-            height={40}
-            alt="Logo"
-          />
+          <Image src="/youtube.png" width={40} height={40} alt="Logo" />
         </div>
         <div className="relative mx-auto hidden w-full max-w-md overflow-hidden sm:block">
           <Input

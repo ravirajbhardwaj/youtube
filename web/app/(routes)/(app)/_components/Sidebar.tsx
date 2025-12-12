@@ -18,7 +18,8 @@ export default function Sidebar() {
           >
             <Link
               href={`/${item.name.toLocaleLowerCase()}`}
-              className="flex flex-col items-center justify-center py-1 sm:w-full sm:flex-row sm:border sm:p-1.5 sm:group-hover:justify-start sm:group-hover:px-4 lg:justify-start lg:px-4 bg-background text-foreground">
+              className="flex flex-col items-center justify-center py-1 sm:w-full sm:flex-row sm:border sm:p-1.5 sm:group-hover:justify-start sm:group-hover:px-4 lg:justify-start lg:px-4 bg-background text-foreground"
+            >
               <span className="inline-block w-5 shrink-0 sm:group-hover:mr-4 lg:mr-4">
                 {item.icon}
               </span>

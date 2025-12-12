@@ -14,12 +14,22 @@ export default function SignInPage() {
 
       <div className="grid w-full max-w-sm items-center gap-3 mt-3">
         <Label htmlFor="email">Email</Label>
-        <Input className="bg-input" type="email" id="email" placeholder="Email" />
+        <Input
+          className="bg-input"
+          type="email"
+          id="email"
+          placeholder="Email"
+        />
       </div>
 
       <div className="grid w-full max-w-sm items-center gap-3 mt-3">
         <Label htmlFor="password">Password</Label>
-        <Input className="bg-input" type="password" id="password" placeholder="Password" />
+        <Input
+          className="bg-input"
+          type="password"
+          id="password"
+          placeholder="Password"
+        />
       </div>
 
       <Button className="mt-5">Sign In</Button>

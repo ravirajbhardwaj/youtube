@@ -13,7 +13,7 @@ import {
   updateUserCoverImage,
   getUserChannelProfile,
   getWatchHistory,
-  updateAccountDetails
+  updateAccountDetails,
 } from './user.controller'
 
 // Public routes

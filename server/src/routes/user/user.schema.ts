@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { ACCEPTED_MIMES, MAX_IMAGE_BYTES } from '@/lib/const'
 
 const strongPassword = z
   .string()
@@ -7,6 +8,16 @@ const strongPassword = z
   .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/, {
     message:
       'Password must contain at least one uppercase letter, one lowercase letter, number and one special character.',
+  })
+
+const imageFile = z
+  .instanceof(File)
+  .refine(file => file.size > 0, 'File required')
+  .refine(file => file.size <= MAX_IMAGE_BYTES, {
+    message: `Max size ${MAX_IMAGE_BYTES} bytes`,
+  })
+  .refine(file => !file.type || ACCEPTED_MIMES.includes(file.type), {
+    message: `Allowed types: ${ACCEPTED_MIMES.join(', ')}`,
   })
 
 const registerSchema = z.object({
@@ -20,6 +31,8 @@ const registerSchema = z.object({
     .max(15, { message: 'Fullname must be at most 15 characters long' }),
   email: z.string().nonempty().email({ message: 'Invalid email address' }),
   password: strongPassword,
+  avatar: imageFile.optional(),
+  coverImage: imageFile.optional(),
 })
 
 const loginSchema = registerSchema.pick({

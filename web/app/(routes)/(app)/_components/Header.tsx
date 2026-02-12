@@ -1,123 +1,161 @@
 "use client";
 
 import {
-  CircleQuestionMark,
-  Heart,
-  History,
-  Home,
-  ListVideo,
   SearchIcon,
+  Menu,
+  Bell,
+  Upload,
+  LogOut,
   Settings,
-  TableOfContents,
-  UserCheck,
+  User,
   Video,
-  XCircleIcon,
 } from "lucide-react";
-import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/context/AuthContext";
 
-const navItems = [
-  {
-    name: "Home",
-    mobileView: true,
-    icon: <Home />,
-  },
-  {
-    name: "Liked Videos",
-    mobileView: false,
-    icon: <Heart />,
-  },
-  {
-    name: "History",
-    mobileView: true,
-    icon: <History />,
-  },
-  {
-    name: "My Content",
-    mobileView: false,
-    icon: <Video />,
-  },
-  {
-    name: "Collections",
-    mobileView: true,
-    icon: <ListVideo />,
-  },
-  {
-    name: "Subscribers",
-    mobileView: true,
-    icon: <UserCheck />,
-  },
-  {
-    name: "Support",
-    mobileView: false,
-    icon: <CircleQuestionMark />,
-  },
-  {
-    name: "Settings",
-    mobileView: false,
-    icon: <Settings />,
-  },
-];
+interface HeaderProps {
+  onMenuToggle?: () => void;
+}
 
-export default function Header() {
-  const [avatar, setAvatar] = useState("");
+export default function Header({ onMenuToggle }: HeaderProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push("/signin");
+  };
 
   return (
-    <header className="sticky inset-x-0 top-0 z-50 w-full border-b px-4 bg-background text-foreground">
-      <nav className="mx-auto flex max-w-7xl items-center py-2">
-        <div className="mr-4 w-12 shrink-0 sm:w-16">
-          <Image src="/youtube.png" width={40} height={40} alt="Logo" />
-        </div>
-        <div className="relative mx-auto hidden w-full max-w-md overflow-hidden sm:block">
-          <Input
-            className="bg-input w-full py-1 pl-8 pr-3 outline-none sm:py-2"
-            placeholder="Search"
-            id="search"
-          />
-          <span className="absolute left-2.5 top-1/2 inline-block -translate-y-1/2">
-            <SearchIcon className="h-4 w-4" />
+    <header className="sticky inset-x-0 top-0 z-50 w-full border-b border-border px-4 bg-background">
+      <nav className="mx-auto flex max-w-7xl items-center py-2 gap-4">
+        {/* Mobile Menu Button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="sm:hidden"
+          onClick={onMenuToggle}
+        >
+          <Menu className="h-6 w-6" />
+        </Button>
+
+        {/* Logo */}
+        <Link href="/home" className="flex items-center gap-2 shrink-0">
+          <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center">
+            <Video className="h-5 w-5 text-white" />
+          </div>
+          <span className="font-bold text-lg text-foreground hidden sm:block">
+            StreamTube
           </span>
-        </div>
-        <Button className="ml-auto sm:hidden bg-background text-foreground">
-          <SearchIcon className="h-6 w-6" />
-        </Button>
-        <ModeToggle />
-        <Button className="group peer ml-4 flex w-6 shrink-0 flex-wrap gap-y-1.5 sm:hidden bg-background text-foreground">
-          <TableOfContents />
-        </Button>
-        <div className="fixed inset-y-0 right-0 flex w-full max-w-xs shrink-0 translate-x-full flex-col border-l duration-200 hover:translate-x-0 peer-focus:translate-x-0 sm:static sm:ml-4 sm:w-auto sm:translate-x-0 sm:border-none bg-background text-foreground">
-          <div className="relative flex w-full items-center justify-between border-b px-4 py-2 sm:hidden">
-            <Button className="inline-block w-8 bg-background text-foreground">
-              <XCircleIcon className="h-6" />
+        </Link>
+
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="flex-1 max-w-xl mx-auto hidden sm:block">
+          <div className="relative">
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full py-2 pl-4 pr-12 rounded-full bg-muted border-border"
+              placeholder="Search videos..."
+            />
+            <Button
+              type="submit"
+              variant="ghost"
+              size="icon"
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+            >
+              <SearchIcon className="h-4 w-4" />
             </Button>
           </div>
-          <ul className="my-4 flex w-full flex-wrap gap-2 px-4 sm:hidden bg-background text-foreground">
-            {navItems
-              .filter((item) => !item.mobileView)
-              .map((item) => (
-                <li
-                  key={item.name}
-                  className="w-full bg-background text-foreground"
-                >
-                  <Button className="flex w-full items-center justify-start gap-x-4 border px-4 py-1.5 text-left bg-background text-foreground">
-                    <span className="inline-block w-full max-w-5 group-hover:mr-4 lg:mr-4">
-                      {item.icon}
-                    </span>
-                    <span>{item.name}</span>
+        </form>
+
+        {/* Mobile Search */}
+        <Button variant="ghost" size="icon" className="sm:hidden ml-auto">
+          <SearchIcon className="h-5 w-5" />
+        </Button>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-2">
+          <ModeToggle />
+
+          {user ? (
+            <>
+              {/* Upload Button */}
+              <Link href="/upload" className="hidden sm:block">
+                <Button variant="ghost" size="icon">
+                  <Upload className="h-5 w-5" />
+                </Button>
+              </Link>
+
+              {/* Notifications */}
+              <Button variant="ghost" size="icon" className="hidden sm:flex">
+                <Bell className="h-5 w-5" />
+              </Button>
+
+              {/* User Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user.avatar || ""} alt={user.username} />
+                      <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                        {user.username?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
                   </Button>
-                </li>
-              ))}
-          </ul>
-          <div className="mb-8 mt-auto flex w-full flex-wrap gap-4 px-4 sm:mb-0 sm:mt-0 sm:items-center sm:px-0">
-            <Avatar>
-              <AvatarImage src={avatar} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="px-2 py-1.5">
+                    <p className="font-medium">{user.fullname}</p>
+                    <p className="text-sm text-muted-foreground">@{user.username}</p>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href={`/@${user.username}`}>
+                      <User className="mr-2 h-4 w-4" />
+                      Your Channel
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          ) : (
+            <Link href="/signin">
+              <Button size="sm">Sign In</Button>
+            </Link>
+          )}
         </div>
       </nav>
     </header>

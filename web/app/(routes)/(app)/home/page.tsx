@@ -1,44 +1,97 @@
-import { videos } from "@/components/data";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { videoAPI } from "@/lib/api";
+import { Video } from "@/types/video";
+import VideoCard from "@/components/VideoCard";
+import VideoCardSkeleton from "@/components/VideoCardSkeleton";
 
 export default function HomePage() {
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  const fetchVideos = async () => {
+    try {
+      const response = await videoAPI.search({
+        page: 1,
+        limit: 50,
+        sortBy: "createdAt",
+        sortOrder: "desc",
+      });
+
+      if (response.success && response.data) {
+        setVideos(response.data as Video[]);
+      }
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVideoClick = (videoId: string) => {
+    router.push(`/watch/${videoId}`);
+  };
+
+  if (isLoading) {
+    return (
+      <section className="w-full p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {Array.from({ length: 12 }).map((_, index) => (
+            <VideoCardSkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (videos.length === 0) {
+    return (
+      <section className="w-full p-4">
+        <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+          <div className="w-24 h-24 mb-6 rounded-full bg-muted flex items-center justify-center">
+            <svg
+              className="w-12 h-12 text-muted-foreground"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          <h2 className="text-xl font-semibold text-foreground mb-2">
+            No videos yet
+          </h2>
+          <p className="text-muted-foreground max-w-md">
+            Be the first to upload a video and share it with the community!
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="w-full pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 p-4">
+    <section className="w-full p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {videos
           .filter((video) => video.isPublished)
           .map((video) => (
-            <div key={video.id} className="w-full bg-card">
-              <div className="relative mb-2 w-full pt-[56%]">
-                <div className="absolute inset-0">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="h-full w-full"
-                  />
-                </div>
-                <span className="absolute bottom-1 right-1 inline-block rounded bg- px-1.5 text-sm">
-                  {video.duration}
-                </span>
-              </div>
-              <div className="flex gap-x-2">
-                <div className="h-10 w-10 shrink-0">
-                  <img
-                    src={video.owner.avatar}
-                    alt={video.owner.username}
-                    className="h-full w-full rounded-full"
-                  />
-                </div>
-                <div className="w-full">
-                  <h6 className="mb-1 font-semibold">{video.title}</h6>
-                  <p className="flex text-sm text-secondary-foreground">
-                    {video.views}&nbsp;Views &middot; {video.time}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {video.owner.fullName}
-                  </p>
-                </div>
-              </div>
-            </div>
+            <VideoCard
+              key={video.id}
+              video={video}
+              onClick={handleVideoClick}
+            />
           ))}
       </div>
     </section>

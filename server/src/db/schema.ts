@@ -338,3 +338,12 @@ export const tweetLikes = pgTable(
     }),
   ]
 )
+
+type User = typeof users.$inferSelect
+type Video = typeof videos.$inferSelect
+type Playlist = typeof playlists.$inferSelect
+type Comment = typeof comments.$inferSelect
+type Subscription = typeof subscriptions.$inferSelect
+type Tweet = typeof tweets.$inferSelect
+
+export type { User, Video, Playlist, Comment, Subscription, Tweet }

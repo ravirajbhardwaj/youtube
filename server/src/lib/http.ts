@@ -1,5 +1,5 @@
 import { HttpStatus } from '@/lib/const'
-import { Context } from 'hono'
+import type { Context } from 'hono'
 
 export class ApiResponse<T = any> {
   success: boolean
@@ -13,12 +13,10 @@ export class ApiResponse<T = any> {
 }
 
 export class ApiError extends Error {
-  success: boolean
-  data: null
-  statusCode: number
-
+  private readonly success: boolean
+  private readonly data: null
   constructor(
-    statusCode: number,
+    public statusCode: number,
     message = 'Something went wrong',
     stack = ''
   ) {
@@ -42,6 +40,6 @@ export const ok = <T>(c: Context, data: T, message = 'Success') =>
 export const created = <T>(c: Context, data: T, message = 'Created') =>
   c.json(new ApiResponse(HttpStatus.CREATED, data, message), 201)
 
-export const error = (status: number, message: string) => {
+export const error = (status: number, message: string): void => {
   throw new ApiError(status, message)
 }
